@@ -1,0 +1,7 @@
+name = "BaylorNA4322"
+uuid = "7f1030e0-cf7c-4654-9ac1-b509fa0d55e6"
+authors = ["Rob Kirby <robert.c.kirby@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
