@@ -6,5 +6,5 @@ include("newton.jl")
 
 export bisect
 export fpiter, fp_root_finder
-export newton
+export newton, secant, simplified_newton
 end
