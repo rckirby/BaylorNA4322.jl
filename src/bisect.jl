@@ -32,6 +32,11 @@ function bisect(f, a, b, eps, maxit, output=false)
     end
     
     i = 0
+
+    if output
+        @printf "  Its   a               f(a)            b               f(b)\n"
+        @printf "======================================================================\n"
+    end
     
     while i < maxit
         @assert(fb*fa < 0)
