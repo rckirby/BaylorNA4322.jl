@@ -19,6 +19,10 @@ using Printf
 function fpiter(f, x0, eps, maxit, output=false)
     x = x0
     i = 1
+    if output
+        @printf "  Its   x               f(x)            \n"
+        @printf "==========================================\n"
+    end
     while i < maxit
         fx = f(x)
         if output
@@ -33,4 +37,17 @@ function fpiter(f, x0, eps, maxit, output=false)
         end            
     end
     return false, i, x
+end
+
+
+"""
+    fp_root_finder(f, x0, eps, maxit, output=false)
+
+    Attempts to find a point x where f(x) is approximately zero by finding
+    a fixed point of the function g(x) = f(x) + x.
+
+    See `fpiter` for further documentation
+"""
+function fp_root_finder(f, x0, eps, maxit, output=false)
+    return fpiter(x->f(x)+x, x0, eps, maxit, output)
 end
