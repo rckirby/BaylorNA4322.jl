@@ -1,7 +1,12 @@
+"""
+    neville(xs, fs, x)
+
+    Evaluates the Lagrange interpolant using nodes xs, values fs at a point x.
+    Explicitly forms the entire Neville tableaux.
+"""
 function neville_table(xs, fs, x)
     @assert length(xs) == length(fs)
 
-    # one more than the polynomial degree!
     r = length(xs)
 
     Q = zeros(r, r)
@@ -15,14 +20,22 @@ function neville_table(xs, fs, x)
     return Q[end, end]
 end
 
-# Note: this avoids the O(N^2) storage by overwriting previous computations
-# However, because of the data dependencies in the loop, we have to
-# go from bottom to top.
+
+"""
+    neville(xs, fs, x)
+
+    Evaluates the Lagrange interpolant using nodes xs, values fs at a point x.
+"""
 function neville(xs, fs, x)
     @assert length(xs) == length(fs)
     r = length(xs)
     Q = zeros(r)
     Q[:] = fs[:]
+
+    # Note: this avoids the O(N^2) storage by overwriting previous computations
+    # However, because of the data dependencies in the loop, we have to
+    # go from bottom to top.
+    # We can circumvent the O(N^2) storage but not work.
     for j=2:r
         for i=r:-1:j
             Q[i] = ((x-xs[i-j+1]) * Q[i] - (x-xs[i]) * Q[i-1])/(xs[i] - xs[i-j+1])
@@ -31,6 +44,3 @@ function neville(xs, fs, x)
 
     return Q[end]
 end
-    
-
-    
