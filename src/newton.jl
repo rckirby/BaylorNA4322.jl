@@ -88,7 +88,6 @@ end
     whether or not the method converged (a boolean), the number of iterations
     taken, and the final approximation obtained to the root.
 """
-
 function simplified_newton(f, fp0, x0, eps, maxit, output=false)
     # Current guess and iteration count
     x = x0
