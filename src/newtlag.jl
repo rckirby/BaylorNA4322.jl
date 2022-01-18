@@ -1,3 +1,5 @@
+using LinearAlgebra  # for "diag"
+
 """
     newton_divided_diff_tableau(xi, fi)
 
@@ -56,3 +58,67 @@ function newton_eval(xi, c, x)
     end
     return val
 end
+
+"""Creates a vector that repeats each entry"""
+function twice(xi)
+    n = 2 * length(xi)
+    xx = zeros(n)
+    for i=1:n
+        xx[2*i-1] = xi[i]
+        xx[2*i]  = xi[i]
+    end
+    return xx
+end
+
+"""
+    newton_hermite_divided_diff(xi, fi, fip)
+
+    Computes the divided difference tableau using nodes xi,
+    function values fi, and derivatives fip.  
+
+    Returns the vector of repeated nodes and the
+    Newton coefficients of the polynomial.
+"""
+function newton_hermite_divided_diff(xi, fi, fip)
+    n = length(xi)
+    @assert n == length(fi)
+    @assert n == length(fip)
+    N = 2*n
+
+    tableau = zeros(N, N)
+    # First column has repeated function values
+    for i=1:n
+        tableau[2*i-1, 1] = fi[i]
+        tableau[2*i, 1]= fi[i]
+    end
+
+    # Second column alternates derivatives and differences
+    tableau[2, 2] = fip[1]
+    for i=2:n
+        tableau[2*i-1, 2] = (fi[i] - fi[i-1]) / (xi[i] - xi[i-1])
+        tableau[2*i, 2] = fip[i]
+    end
+
+    xx = twice(xi)
+    # Now, differences as "normal"!
+    for j=3:N
+        for i=j:N
+            tableau[i, j] = (tableau[i, j-1] - tableau[i-1, j-1])/(xx[i]-xx[i-j+1])
+        end
+    end
+    
+    return xx, diag(tableau)
+end
+
+
+using AutoGrad
+f(x) = exp(-2x)
+fp = grad(f)
+xs = [0., 1.]
+fs = f.(xs)
+fps = fp.(xs)
+
+xx, c = newton_hermite_divided_diff(xs, fs, fps)
+
+print(newton_eval(xx, c, 0.5))
+
