@@ -61,8 +61,8 @@ end
 
 """Creates a vector that repeats each entry"""
 function twice(xi)
-    n = 2 * length(xi)
-    xx = zeros(n)
+    n = length(xi)
+    xx = zeros(2*n)
     for i=1:n
         xx[2*i-1] = xi[i]
         xx[2*i]  = xi[i]
