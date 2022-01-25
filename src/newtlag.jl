@@ -111,14 +111,13 @@ function newton_hermite_divided_diff(xi, fi, fip)
 end
 
 
-using AutoGrad
-f(x) = exp(-2x)
-fp = grad(f)
-xs = [0., 1.]
-fs = f.(xs)
-fps = fp.(xs)
+# using AutoGrad
+# f(x) = exp(-2x)
+# fp = grad(f)
+# xs = [0., 1.]
+# fs = f.(xs)
+# fps = fp.(xs)
 
-xx, c = newton_hermite_divided_diff(xs, fs, fps)
+# xx, c = newton_hermite_divided_diff(xs, fs, fps)
 
-print(newton_eval(xx, c, 0.5))
-
+# print(newton_eval(xx, c, 0.5))
