@@ -57,5 +57,5 @@ function bisect(f, a, b, eps, maxit, output=false)
             return true, i, c
         end
     end
-    return false, i, c
+    return false, i, 0.5*(a + b)
 end
