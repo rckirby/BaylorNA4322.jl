@@ -30,13 +30,21 @@ function compute_natural_spline(xi, fi)
     vd = zeros(np1)
     vl = zeros(np1-1)
     vu = zeros(np1-1)
+
+    for i=1:np1-2
+        vl[i] = h[i]
+    end
+
     vd[1] = 1.0
-    vd[end] = 1.0
     for j=2:np1-1
-        vl[j] = h[j-1]
-        vu[j] = h[j]
         vd[j] = 2*(h[j-1] + h[j])
     end
+    vd[end] = 1.0
+
+    for i=2:np1-1
+        vu[i] = h[i]
+    end
+
     M = LinearAlgebra.Tridiagonal(vl, vd, vu)
 
     # now we need to build the RHS
@@ -120,15 +128,9 @@ function evaluate_spline_derivative(xi, coeffs, x)
 end;
 
 
-# xs = [0.1, 0.2, 0.3, 0.4];
-# f(x) = x * cos(x) - 2 * x^2 + 3*x - 1;
-
-# ys = f.(xs)
+# xs = [0.0, 1.0, 2, 3];
+# ys = [1., 1., 0, 10];
 
 # spl = compute_natural_spline(xs, ys)
 
-# using Plots
-
-# plot(f, 0.1, 0.4)
-# plot!(x->evaluate_spline(xs, spl, x), 0.1, 0.4)
-# savefig("foo.png")
+# display(spl)
